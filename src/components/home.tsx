@@ -1,15 +1,25 @@
 import React, { useState } from "react";
 import { Button } from "./ui/button";
-import PreferenceForm from "./PreferenceForm";
+import PreferenceForm, { WorkoutPreferences } from "./PreferenceForm";
 import WorkoutRoutine from "./WorkoutRoutine";
 
 const Home = () => {
   const [showResults, setShowResults] = useState(false);
-  const [workoutGenerated, setWorkoutGenerated] = useState(false);
+  const [workoutPreferences, setWorkoutPreferences] =
+    useState<WorkoutPreferences | null>(null);
 
-  const handleGenerateWorkout = () => {
-    // In a real app, this would process the form data and generate a workout
-    setWorkoutGenerated(true);
+  const handleGenerateWorkout = (preferences: WorkoutPreferences) => {
+    // Store the preferences and show results
+    setWorkoutPreferences(preferences);
+    setShowResults(true);
+  };
+
+  const handleBackToForm = () => {
+    setShowResults(false);
+  };
+
+  const handleGenerateNew = () => {
+    // Keep the same preferences but generate a new workout
     setShowResults(true);
   };
 
@@ -91,14 +101,21 @@ const Home = () => {
                 routine for you
               </p>
 
-              <PreferenceForm onSubmit={handleGenerateWorkout} />
+              <div className="flex justify-center">
+                <PreferenceForm onSubmit={handleGenerateWorkout} />
+              </div>
             </div>
           </div>
         ) : (
-          <WorkoutRoutine
-            onBack={() => setShowResults(false)}
-            onGenerateNew={handleGenerateWorkout}
-          />
+          <div className="flex justify-center">
+            <WorkoutRoutine
+              duration={workoutPreferences?.duration}
+              fitnessLevel={workoutPreferences?.fitnessLevel}
+              targetMuscleGroups={workoutPreferences?.targetMuscleGroups}
+              onBack={handleBackToForm}
+              onGenerateNew={handleGenerateNew}
+            />
+          </div>
         )}
       </main>
     </div>

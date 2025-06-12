@@ -74,6 +74,7 @@ const PreferenceForm: React.FC<PreferenceFormProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Form submitted with preferences:", preferences);
     onSubmit(preferences);
   };
 
