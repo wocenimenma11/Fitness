@@ -20,6 +20,8 @@ interface WorkoutRoutineProps {
   duration?: number;
   fitnessLevel?: string;
   targetMuscleGroups?: string[];
+  onBack?: () => void;
+  onGenerateNew?: () => void;
 }
 
 const WorkoutRoutine: React.FC<WorkoutRoutineProps> = ({
@@ -64,6 +66,8 @@ const WorkoutRoutine: React.FC<WorkoutRoutineProps> = ({
   duration = 30,
   fitnessLevel = "Intermediate",
   targetMuscleGroups = ["Chest", "Back", "Legs"],
+  onBack = () => {},
+  onGenerateNew = () => {},
 }) => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-4xl mx-auto">
@@ -107,7 +111,16 @@ const WorkoutRoutine: React.FC<WorkoutRoutineProps> = ({
         <h3 className="text-xl font-semibold text-blue-800 mb-4">Exercises</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {exercises.map((exercise) => (
-            <ExerciseCard key={exercise.id} exercise={exercise} />
+            <ExerciseCard
+              key={exercise.id}
+              name={exercise.name}
+              sets={exercise.sets}
+              reps={exercise.reps}
+              equipment={exercise.equipment}
+              targetMuscle={exercise.muscleGroup}
+              imageUrl={exercise.imageUrl}
+              instructions={[exercise.instructions]}
+            />
           ))}
         </div>
       </div>
@@ -122,7 +135,12 @@ const WorkoutRoutine: React.FC<WorkoutRoutineProps> = ({
         >
           Print Routine
         </Button>
-        <Button variant="secondary">Generate New Routine</Button>
+        <Button variant="secondary" onClick={onGenerateNew}>
+          Generate New Routine
+        </Button>
+        <Button variant="outline" onClick={onBack}>
+          Back to Form
+        </Button>
       </div>
     </div>
   );
